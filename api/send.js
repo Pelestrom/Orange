@@ -1,5 +1,6 @@
 // api/send.js
 export default async function handler(req, res) {
+  // Seules les requêtes POST sont autorisées
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée' });
   }
@@ -25,7 +26,10 @@ Heure : ${new Date().toLocaleString('fr-FR')}
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text: message }),
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
     });
 
     if (!response.ok) {
@@ -37,6 +41,6 @@ Heure : ${new Date().toLocaleString('fr-FR')}
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Erreur lors de l’envoi' });
+    return res.status(500).json({ error: 'Erreur lors de l’envoi du message' });
   }
 }
